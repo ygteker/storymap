@@ -1,2 +1,35 @@
-greeting:
-  message: "hello"
+quarkus:
+  log:
+    category:
+      "org.hibernate.orm.boot":
+        level: DEBUG
+  rest-client:
+    gitlab-api:
+      url: ${gitlab.api-url}
+      headers:
+        - name: PRIVATE-TOKEN
+          value: ${gitlab.token}
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/storymap
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  hibernate-orm:
+    packages: com.example.entity
+    sql-load-script: import.sql
+    log:
+      sql: true
+    schema-management:
+      strategy: drop-and-create
+  smallrye-openapi:
+    path: /q/openapi
+
+gitlab:
+  token: ${GITLAB_TOKEN}
+  api-url: https://gitlab.com/api/v4
+  project-id: ${GITLAB_PROJECT_ID}
+
+"%dev":
+   DB_USER: admin
+   DB_PASSWORD: admin
