@@ -3,6 +3,13 @@ quarkus:
     category:
       "org.hibernate.orm.boot":
         level: DEBUG
+    min-level: TRACE
+  #      "io.quarkus.security":
+#        level: DEBUG
+#      "io.smallrye.jwt":
+#        level: DEBUG
+#      "io.quarkus.config":
+#        level: DEBUG
   rest-client:
     gitlab-api:
       url: ${gitlab.api-url}
@@ -20,10 +27,14 @@ quarkus:
     sql-load-script: import.sql
     log:
       sql: true
+      bind-parameters: true
     schema-management:
       strategy: drop-and-create
   smallrye-openapi:
     path: /q/openapi
+  native:
+    resources:
+      includes: publicKey.pem
 
 gitlab:
   token: ${GITLAB_TOKEN}
@@ -31,5 +42,34 @@ gitlab:
   project-id: ${GITLAB_PROJECT_ID}
 
 "%dev":
-   DB_USER: admin
-   DB_PASSWORD: admin
+  DB_USER: admin
+  DB_PASSWORD: admin
+  mp:
+   jwt:
+      verify:
+        publickey:
+          location: publicKey.pem
+        issuer: https://example.com/issuer
+      groups:
+        claim: groups
+  smallrye:
+    jwt:
+      sign:
+        key:
+          location: privateKey.pem
+
+"%prod":
+  DB_USER: ${DB_USER}
+  DB_PASSWORD: ${DB_PASSWORD}
+  mp:
+    jwt:
+      verify:
+        publickey:
+          location: publicKey.pem
+        issuer: https://example.com/issuer
+      groups:
+        claim: groups
+  smallrye:
+    jwt:
+      sign:
+        key: ${PRIVATE_KEY}

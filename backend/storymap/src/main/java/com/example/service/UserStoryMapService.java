@@ -50,7 +50,7 @@ public class UserStoryMapService {
     }
 
     @Transactional
-    public void assignIssue(Long issueId, Long userStepId, Long releaseId) {
+    public IssueAssignment assignIssue(Long issueId, Long userStepId, Long releaseId) {
         UserStep userStep = UserStep.findById(userStepId);
         Release release = releaseId != null ? Release.findById(releaseId) : null;
 
@@ -58,11 +58,12 @@ public class UserStoryMapService {
         if (existing == null) {
             existing = new IssueAssignment();
             existing.gitlabIssueId = issueId;
+            existing.userStep = userStep;
+            existing.release = release;
+            existing.persist();
         }
 
-        existing.userStep = userStep;
-        existing.release = release;
-        existing.persist();
+        return existing;
     }
 }
 
