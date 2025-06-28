@@ -11,7 +11,7 @@ import java.util.List;
 
 @Path("/api/issues")
 @Produces(MediaType.APPLICATION_JSON)
-@RolesAllowed("User")
+//@RolesAllowed("User")
 public class IssueResource {
     @Inject
     GitlabService gitlabService;

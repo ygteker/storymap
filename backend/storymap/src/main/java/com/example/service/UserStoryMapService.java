@@ -7,6 +7,7 @@ import com.example.entity.IssueAssignment;
 import com.example.entity.Release;
 import com.example.entity.UserJourney;
 import com.example.entity.UserStep;
+import io.quarkus.cache.CacheInvalidate;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -49,6 +50,7 @@ public class UserStoryMapService {
         }).toList();
     }
 
+    @CacheInvalidate(cacheName = "gitlab-issues")
     @Transactional
     public IssueAssignment assignIssue(Long issueId, Long userStepId, Long releaseId) {
         UserStep userStep = UserStep.findById(userStepId);
@@ -62,6 +64,8 @@ public class UserStoryMapService {
             existing.release = release;
             existing.persist();
         }
+
+
 
         return existing;
     }

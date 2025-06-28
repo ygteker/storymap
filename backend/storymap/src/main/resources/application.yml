@@ -3,14 +3,19 @@ quarkus:
     category:
       "org.hibernate.orm.boot":
         level: DEBUG
-    min-level: TRACE
+      "org.jboss.resteasy.reactive.client.logging":
+        level: DEBUG
   #      "io.quarkus.security":
 #        level: DEBUG
 #      "io.smallrye.jwt":
 #        level: DEBUG
 #      "io.quarkus.config":
 #        level: DEBUG
+    min-level: TRACE
+
   rest-client:
+    logging:
+      scope: request-response
     gitlab-api:
       url: ${gitlab.api-url}
       headers:
@@ -26,7 +31,7 @@ quarkus:
     packages: com.example.entity
     sql-load-script: import.sql
     log:
-      sql: true
+      sql: false
       bind-parameters: true
     schema-management:
       strategy: drop-and-create
@@ -35,6 +40,10 @@ quarkus:
   native:
     resources:
       includes: publicKey.pem
+  cache:
+    caffeine:
+      gitlab-issues:
+        expire-after-write: 5m
 
 gitlab:
   token: ${GITLAB_TOKEN}

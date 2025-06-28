@@ -15,5 +15,6 @@ public interface GitlabClient {
     @GET
     List<IssueDTO> getIssues(@PathParam("projectId") String projectId,
                              @QueryParam("page") @DefaultValue("1") int page,
-                             @QueryParam("per_page") @DefaultValue("20") int perPage);
+                             @QueryParam("per_page") @DefaultValue("20") int perPage,
+                             @HeaderParam("PRIVATE-TOKEN") String token);
 }

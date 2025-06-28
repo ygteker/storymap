@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.client.GitlabClient;
 import com.example.dtos.IssueDTO;
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -19,7 +20,14 @@ public class GitlabService {
     @ConfigProperty(name = "gitlab.project-id")
     String projectId;
 
+    @ConfigProperty(name = "gitlab.token")
+    String token;
+
+    @CacheResult(cacheName = "gitlab-issues")
     public List<IssueDTO> fetchIssues(int page, int size) {
-        return gitlabClient.getIssues(projectId, page, size);
+//        System.out.println("Calling Gitlab: /projects/" + projectId + "/issues?page=" + page + "&size=" + size);
+//        System.out.println("Token: " + token);
+//        System.out.println("API URL: " + apiUrl);
+        return gitlabClient.getIssues(projectId, page, size, token);
     }
 }
