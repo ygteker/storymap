@@ -8,13 +8,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.jwt.Claims;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,12 +51,11 @@ public class AuthService {
     }
 
     public String generateToken(String username, String role) {
-        String token = Jwt.issuer("https://example.com/issuer")
+        return Jwt.issuer("https://example.com/issuer")
                 .upn("jdoe@quarkus.io")
                 .groups(new HashSet<>(Collections.singletonList(role)))
                 .claim("username", username)
                 .sign(loadPrivateKey());
-        return token;
     }
 
     public PrivateKey loadPrivateKey() {

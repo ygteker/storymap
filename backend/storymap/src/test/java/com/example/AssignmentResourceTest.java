@@ -5,7 +5,6 @@ import com.example.resource.AssignmentResource;
 import com.example.service.UserStoryMapService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
-import org.apache.http.entity.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,5 @@
 package com.example.resource;
 
-import com.example.dtos.UserDTO;
 import com.example.entity.StoryMapUser;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;

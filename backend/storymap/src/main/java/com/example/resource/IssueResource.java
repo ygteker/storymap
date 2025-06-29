@@ -2,7 +2,6 @@ package com.example.resource;
 
 import com.example.dtos.IssueDTO;
 import com.example.service.GitlabService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

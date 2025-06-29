@@ -53,9 +53,9 @@ public class UserStoryMapServiceTest {
             List<UserJourneyDTO> result = userStoryMapService.buildMap();
 
             assertEquals(1, result.size());
-            assertEquals("Journey 1", result.get(0).title);
-            assertEquals(1, result.get(0).userSteps.size());
-            assertEquals(123L, result.get(0).userSteps.get(0).issues.get(0).gitlabIssueId);
+            assertEquals("Journey 1", result.getFirst().title);
+            assertEquals(1, result.getFirst().userSteps.size());
+            assertEquals(123L, result.getFirst().userSteps.getFirst().issues.getFirst().gitlabIssueId);
         }
     }
 
