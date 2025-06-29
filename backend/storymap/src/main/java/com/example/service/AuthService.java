@@ -52,7 +52,7 @@ public class AuthService {
         return new TokenDTO(token);
     }
 
-    private String generateToken(String username, String role) {
+    public String generateToken(String username, String role) {
         String token = Jwt.issuer("https://example.com/issuer")
                 .upn("jdoe@quarkus.io")
                 .groups(new HashSet<>(Collections.singletonList(role)))
@@ -61,7 +61,7 @@ public class AuthService {
         return token;
     }
 
-    private PrivateKey loadPrivateKey() {
+    public PrivateKey loadPrivateKey() {
         try {
             byte[] keyBytes = Base64.getDecoder().decode(privateKeyBse64);
             String pem = new String(keyBytes, StandardCharsets.UTF_8)
@@ -77,11 +77,11 @@ public class AuthService {
         }
     }
 
-    private String encode(String password) {
+    public String encode(String password) {
         return Base64.getEncoder().encodeToString(password.getBytes(StandardCharsets.UTF_8));
     }
 
-    private boolean matches(String raw, String encoded) {
+    public boolean matches(String raw, String encoded) {
         return encode(raw).equals(encoded);
     }
 }
