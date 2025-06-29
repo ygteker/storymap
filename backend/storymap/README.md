@@ -1,104 +1,137 @@
-# storymap
+# StoryMap - GitLab Issue Mapping Service
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is a Quarkus-based backend service designed to fetch GitLab issues and associate them with user journeys and steps, persisting that data in a PostgreSQL database. It includes JWT-based authentication and caching support.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+---
 
-## Running the application in dev mode
+## ✅ Features
 
-You can run your application in dev mode that enables live coding using:
+- Fetch GitLab issues via GitLab REST API (with caching)
+- Store User Journeys, User Steps, Releases, and Issue Assignments
+- Expose REST endpoints for issue assignment and mapping
+- JWT login/signup/logout with RSA encryption
+- Unit and integration test coverage
+- Dockerized for deployment
 
-```shell script
+---
+
+## 🚀 Running Locally (Dev Mode)
+
+```bash
 ./gradlew quarkusDev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+Make sure you have a running PostgreSQL instance with the following settings (or update `application.yaml`):
 
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./gradlew build
+```yaml
+quarkus:
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/storymap
+    username: admin
+    password: admin
 ```
 
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+---
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+## 🐳 Docker Deployment (Production Mode)
 
-If you want to build an _über-jar_, execute the following command:
+### 1. Build Docker Image
 
-```shell script
-./gradlew build -Dquarkus.package.jar.type=uber-jar
+```bash
+docker build -f src/main/docker/Dockerfile.jvm -t storymap-app .
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
+### 2. Use Docker Compose to Spin Up App + PostgreSQL
 
-## Creating a native executable
+Create a file called `docker-compose.yml`:
 
-You can create a native executable using:
+```yaml
+version: '3.8'
 
-```shell script
-./gradlew build -Dquarkus.native.enabled=true
+services:
+  db:
+    image: postgres:15
+    container_name: storymap-db
+    restart: always
+    environment:
+      POSTGRES_DB: storymap
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    image: storymap-app
+    container_name: storymap-app
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      DB_USER: admin
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://db:5432/storymap
+      PRIVATE_KEY: ${PRIVATE_KEY}
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Then run:
 
-```shell script
-./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
+```bash
+docker-compose up --build
 ```
 
-You can then execute your native executable with: `./build/storymap-1.0-SNAPSHOT-runner`
+---
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
+## 🧪 Running Tests
 
-## Related Guides
+```bash
+./gradlew test
+```
 
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and
-  Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on
-  it.
-- Hibernate ORM ([guide](https://quarkus.io/guides/hibernate-orm)): Define your persistent model with Hibernate ORM and
-  Jakarta Persistence
-- Flyway ([guide](https://quarkus.io/guides/flyway)): Handle your database schema migrations
-- REST Client ([guide](https://quarkus.io/guides/rest-client)): Call REST services
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes
-  with Swagger UI
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus
-  REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- YAML Configuration ([guide](https://quarkus.io/guides/config-yaml)): Use YAML to configure your Quarkus application
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code
-  for Hibernate ORM via the active record or the repository pattern
-- SmallRye JWT ([guide](https://quarkus.io/guides/security-jwt)): Secure your applications with JSON Web Token
-- Cache ([guide](https://quarkus.io/guides/cache)): Enable application data caching in CDI beans
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+---
 
-## Provided Code
+## 🔐 JWT Authentication
 
-### YAML Config
+To generate a new keypair:
 
-Configure your application with YAML
+```bash
+openssl genpkey -algorithm RSA -out privateKey.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in privateKey.pem -out publicKey.pem
+```
 
-[Related guide section...](https://quarkus.io/guides/config-reference#configuration-examples)
+Base64-encode the private key for `.env`:
 
-The Quarkus application configuration is located in `src/main/resources/application.yml`.
+```bash
+base64 -i privateKey.pem
+```
 
-### Hibernate ORM
+Then add it to `.env`:
 
-Create your first JPA entity
+```
+PRIVATE_KEY=<your-base64-private-key>
+```
 
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
+---
 
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
+## 📦 API Endpoints
 
-### REST Client
-
-Invoke different services through REST with JSON
-
-[Related guide section...](https://quarkus.io/guides/rest-client)
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+| Method | Path                    | Description                                      |
+|--------|-------------------------|--------------------------------------------------|
+| POST   | /auth/register          | Register new user                                |
+| POST   | /auth/login             | Login and receive JWT                            |
+| POST   | /auth/logout            | (Stateless; handled on client)                   |
+| GET    | /api/issues             | List GitLab issues with optional mapping         |
+| POST   | /api/assignments        | Assign issue to user step and optional release   |
+| GET    | /api/user-story-map     | View full user journey map                       |

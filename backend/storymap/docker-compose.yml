@@ -10,6 +10,22 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-
+  app:
+    image: storymap-app
+    container_name: storymap-app
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      DB_USER: admin
+      DB_PASSWORD: admin
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://db:5432/storymap
+      PRIVATE_KEY: ${PRIVATE_KEY} # add your base64 private key in .env or CLI
+    env_file:
+      - .env
 volumes:
   pgdata:
