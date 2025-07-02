@@ -1,21 +1,24 @@
 package com.example.service;
 
 import com.example.dtos.UserJourneyDTO;
-import com.example.entity.*;
+import com.example.entity.IssueAssignment;
+import com.example.entity.Release;
+import com.example.entity.UserJourney;
+import com.example.entity.UserStep;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.NotSupportedException;
 import jakarta.transaction.SystemException;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.UserTransaction;
-import org.junit.jupiter.api.*;
-import org.mockito.MockedStatic;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.mockStatic;
 
 @QuarkusTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
