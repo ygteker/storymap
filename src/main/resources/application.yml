@@ -2,16 +2,20 @@ quarkus:
   log:
     category:
       "org.hibernate.orm.boot":
-        level: DEBUG
+        level: ERROR
       "org.jboss.resteasy.reactive.client.logging":
-        level: DEBUG
-  #      "io.quarkus.security":
-#        level: DEBUG
-#      "io.smallrye.jwt":
-#        level: DEBUG
-#      "io.quarkus.config":
-#        level: DEBUG
-    min-level: TRACE
+        level: ERROR
+      "io.quarkus.resteasy.reactive.server.handlers.ResponseWriterHandler":
+        level: ERROR
+      "org.jboss.resteasy.reactive.server":
+        level: ERROR
+      "io.quarkus.security":
+        level: ERROR
+      "io.smallrye.jwt":
+        level: ERROR
+      "io.quarkus.config":
+        level: ERROR
+    min-level: DEBUG
 
   rest-client:
     logging:
@@ -32,7 +36,7 @@ quarkus:
     sql-load-script: import.sql
     log:
       sql: false
-      bind-parameters: true
+      bind-parameters: false
     schema-management:
       strategy: drop-and-create
   smallrye-openapi:
@@ -54,7 +58,7 @@ gitlab:
   DB_USER: admin
   DB_PASSWORD: admin
   mp:
-   jwt:
+    jwt:
       verify:
         publickey:
           location: publicKey.pem

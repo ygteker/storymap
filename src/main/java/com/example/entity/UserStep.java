@@ -13,6 +13,6 @@ public class UserStep extends PanacheEntity {
     @JoinColumn(name = "user_journey_id")
     public UserJourney userJourney;
 
-    @OneToMany(mappedBy = "userStep")
+    @OneToMany(mappedBy = "userStep", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<IssueAssignment> assignments;
 }

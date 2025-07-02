@@ -1,5 +1,6 @@
 package com.example.resource;
 
+import com.example.dtos.IssueDTO;
 import com.example.entity.IssueAssignment;
 import com.example.service.UserStoryMapService;
 import jakarta.annotation.security.RolesAllowed;
@@ -27,6 +28,11 @@ public class AssignmentResource {
     @POST
     public Response assign(AssignmentPayload payload) {
         IssueAssignment created = userStoryMapService.assignIssue(payload.gitlabIssueId, payload.userStepId, payload.releaseId);
-        return Response.status(Response.Status.CREATED).entity(created).build();
+        IssueDTO dto = new IssueDTO();
+        dto.id = created.id;
+        dto.title = created.userStep.title;
+        dto.releaseName = created.release.name;
+        dto.gitlabIssueId = created.gitlabIssueId;
+        return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 }
