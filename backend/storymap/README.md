@@ -1,26 +1,11 @@
 # StoryMap - GitLab Issue Mapping Service
 
-This is a Quarkus-based backend service designed to fetch GitLab issues and associate them with user journeys and steps, persisting that data in a PostgreSQL database. It includes JWT-based authentication and caching support.
-
----
-
-## ✅ Features
-
-- Fetch GitLab issues via GitLab REST API (with caching)
-- Store User Journeys, User Steps, Releases, and Issue Assignments
-- Expose REST endpoints for issue assignment and mapping
-- JWT login/signup/logout with RSA encryption
-- Unit and integration test coverage
-- Dockerized for deployment
-
----
-
-## 🚀 Running Locally (Dev Mode)
+## Running Locally (Dev Mode)
 
 ```bash
 ./gradlew quarkusDev
 ```
-
+The application expects some environment variables: You can edit them in application.yaml or create a .env file (which can also be used for docker):
 Make sure you have a running PostgreSQL instance with the following settings (or update `application.yaml`):
 
 ```yaml
@@ -30,12 +15,12 @@ quarkus:
     jdbc:
       url: jdbc:postgresql://localhost:5432/storymap
     username: admin
-    password: admin
+    password: admin # Password is admin for dev-mode
 ```
 
 ---
 
-## 🐳 Docker Deployment (Production Mode)
+## Docker Deployment (Production Mode)
 
 ### 1. Build Docker Image
 
@@ -80,7 +65,7 @@ services:
       QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://db:5432/storymap
       PRIVATE_KEY: ${PRIVATE_KEY}
     env_file:
-      - .env
+      - .env # You need to create a .env file or import some variables
 
 volumes:
   pgdata:
@@ -94,7 +79,7 @@ docker-compose up --build
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 ```bash
 ./gradlew test
@@ -125,7 +110,8 @@ PRIVATE_KEY=<your-base64-private-key>
 
 ---
 
-## 📦 API Endpoints
+## API Endpoints
+It is also under http://localhost:8080/q/swagger-ui/
 
 | Method | Path                    | Description                                      |
 |--------|-------------------------|--------------------------------------------------|
@@ -135,3 +121,5 @@ PRIVATE_KEY=<your-base64-private-key>
 | GET    | /api/issues             | List GitLab issues with optional mapping         |
 | POST   | /api/assignments        | Assign issue to user step and optional release   |
 | GET    | /api/user-story-map     | View full user journey map                       |
+
+
