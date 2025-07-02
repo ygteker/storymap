@@ -36,7 +36,6 @@ public class UserStoryMapServiceTest {
         UserJourney.deleteAll();
     }
 
-    //TODO cannot get Mockito working with Panache, I will try if I get more time
     @Test
     void testBuildMap_withData() throws SystemException, NotSupportedException {
         userTransaction.begin();
