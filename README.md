@@ -1,6 +1,6 @@
 # StoryMap - GitLab Issue Mapping Service
 
-## Running Locally (Dev Mode)
+## Running Locally 
 
 ```bash
 ./gradlew quarkusDev
@@ -20,7 +20,7 @@ quarkus:
 
 ---
 
-## Docker Deployment (Production Mode)
+## Docker Deployment 
 
 ### 1. Build Docker Image
 
