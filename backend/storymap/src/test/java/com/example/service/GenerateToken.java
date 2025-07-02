@@ -1,4 +1,4 @@
-package com.example;
+package com.example.service;
 
 import io.smallrye.jwt.build.Jwt;
 import org.eclipse.microprofile.jwt.Claims;

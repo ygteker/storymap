@@ -1,8 +1,7 @@
-package com.example;
+package com.example.service;
 
 import com.example.client.GitlabClient;
 import com.example.dtos.IssueDTO;
-import com.example.service.GitlabService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

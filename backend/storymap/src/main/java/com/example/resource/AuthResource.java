@@ -1,10 +1,10 @@
 package com.example.resource;
 
 import com.example.dtos.AuthDTO;
-import com.example.dtos.TokenDTO;
 import com.example.entity.StoryMapUser;
 import com.example.service.AuthService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -25,15 +25,15 @@ public class AuthResource {
 
     @POST
     @Path("/register")
-    public Response register(AuthDTO dto) {
+    public Response register(@Valid AuthDTO dto) {
         StoryMapUser user = authService.register(dto);
         return Response.status(Response.Status.CREATED).entity(user).build();
     }
 
     @POST
     @Path("/login")
-    public TokenDTO login(AuthDTO dto) {
-        return authService.login(dto);
+    public Response login(@Valid AuthDTO dto) {
+        return Response.ok().entity(authService.login(dto)).build();
     }
 
     @POST

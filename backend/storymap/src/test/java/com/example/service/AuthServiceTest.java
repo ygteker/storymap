@@ -1,8 +1,7 @@
-package com.example;
+package com.example.service;
 
 import com.example.dtos.AuthDTO;
 import com.example.entity.StoryMapUser;
-import com.example.service.AuthService;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.NotSupportedException;

@@ -25,9 +25,6 @@ public class GitlabService {
 
     @CacheResult(cacheName = "gitlab-issues")
     public List<IssueDTO> fetchIssues(int page, int size) {
-//        System.out.println("Calling Gitlab: /projects/" + projectId + "/issues?page=" + page + "&size=" + size);
-//        System.out.println("Token: " + token);
-//        System.out.println("API URL: " + apiUrl);
         return gitlabClient.getIssues(projectId, page, size, token);
     }
 }

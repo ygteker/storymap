@@ -24,7 +24,6 @@ public class StoryMapUserResource {
     public Response getUser() {
         String username = jwt.getClaim("username");
         StoryMapUser user = StoryMapUser.find("username", username).firstResult();
-        System.out.println(user.username);
         return Response.ok().entity(user).build();
     }
 }

@@ -2,6 +2,7 @@ package com.example.resource;
 
 import com.example.entity.IssueAssignment;
 import com.example.service.UserStoryMapService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -11,7 +12,7 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/api/assignments")
 @Consumes(MediaType.APPLICATION_JSON)
-//@RolesAllowed("All")
+@RolesAllowed("User")
 public class AssignmentResource {
 
     public static class AssignmentPayload {
