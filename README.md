@@ -122,4 +122,6 @@ It is also under http://localhost:8080/q/swagger-ui/
 | POST   | /api/assignments        | Assign issue to user step and optional release   |
 | GET    | /api/user-story-map     | View full user journey map                       |
 
+## Required variables:
+POSTGRES_PASSWORD, PRIVATE_KEY, GITLAB_TOKEN, GITLAB_PROJECT_ID, DB_USER, DB_PASSWORD
 
