@@ -1,6 +1,6 @@
 # StoryMap - GitLab Issue Mapping Service
 
-## Running Locally 
+## Running Locally (Dev Mode)
 
 ```bash
 ./gradlew quarkusDev
