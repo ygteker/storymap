@@ -47,7 +47,6 @@ public class AuthServiceIT {
     @Test
     public void login_shouldReturnTokenWhenCredentialsAreCorrect() throws SystemException, NotSupportedException {
         userTransaction.begin();
-        // Arrange
         AuthDTO dto = new AuthDTO();
         dto.username = "user";
         dto.password = "password";
